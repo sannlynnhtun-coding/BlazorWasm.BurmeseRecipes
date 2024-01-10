@@ -1,0 +1,32 @@
+﻿@if (Data is not null)
+{
+    <div class="menu @(IsLast ? "last" :"")">
+        <div class="dt-sc-one-third column first">
+            <div class="entry-thumb">
+                <a href="javascript:void(0);">
+                    <span class="border rotate"> </span>
+                    <div class="border">
+                        <span class="top-right"></span>
+                        <img src="img/@(Data.Name).jpg" alt title onerror="this.src='img/default.png'" />
+                        <span class="code">Code:@Data.Guid</span>
+                        <span class="bottom-left"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="dt-sc-two-third column">
+            <div class="entry-detail">
+                <h3>
+                    <a href="javascript:void(0);">@Data.Name</a>
+                </h3>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public BurmeseRecipeModel Data { get; set; }
+
+    [Parameter]
+    public bool IsLast { get; set; }
+}

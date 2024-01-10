@@ -1,128 +1,66 @@
 ﻿@page "/"
+@using BlazorWasm.BurmeseRecipes.Models
 
-<div class="container">
-    <h2 class="block-title">Featured Menu</h2>
-    <div class="dt-sc-one-half column first">
-        @* 1 *@
-        <div class="menu">
-            <div class="dt-sc-one-third column first">
-                <div class="entry-thumb">
-                    <a href="index_2.html#">
-                        <span class="border rotate"> </span>
-                        <div class="border">
-                            <span class="top-right"></span>
-                            <img src="images/menu/menu-img6.jpg" alt title />
-                            <span class="code">Code:TOMFRY</span>
-                            <span class="bottom-left"></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="dt-sc-two-third column">
-                <div class="entry-detail">
-                    <h3>
-                        <a href="index_2.html#">Tomato Special Fry - 1 Plate</a>
-                    </h3>
-                    <span class="price">$25.00</span>
-                    <p>
-                        Roin a bibendum nibh. Nunc fermentum sit amet mi nec
-                        consequat. Praesent porttitor nulla sit amet dui
-                        lobortis...
-                    </p>
-                </div>
-            </div>
+@if (Data is not null)
+{
+    <div class="container">
+        <h2 class="block-title">Burmese Recipes</h2>
+        <div style="display:flex;justify-content:center;">
+            <MudPagination SelectedChanged="PageChanged" Count="@(Data.PageCount)" Class="pa-4" />
         </div>
-        @* 3 *@
-        <div class="menu last">
-            <div class="dt-sc-one-third column first">
-                <div class="entry-thumb">
-                    <a href="index_2.html#">
-                        <span class="border rotate"> </span>
-                        <div class="border">
-                            <span class="top-right"></span>
-                            <img src="images/menu/menu-img7.jpg" alt title />
-                            <span class="code">Code:TOMFRY</span>
-                            <span class="bottom-left"></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="dt-sc-two-third column">
-                <div class="entry-detail">
-                    <h3><a href="index_2.html#">Bitter Sweet - 1 Plate</a></h3>
-                    <span class="price">$25.00</span>
-                    <p>
-                        Roin a bibendum nibh. Nunc fermentum sit amet mi nec
-                        consequat. Praesent porttitor nulla sit amet dui
-                        lobortis...
-                    </p>
-                </div>
-            </div>
+        <div class="hr">
+            <span class="driver"></span>
+        </div>
+        <div class="dt-sc-one-half column first">
+            @* 1 *@
+            @if (Data.DataList.Count >= 1)
+            {
+                <P_Card Data="Data.DataList[0]" />
+            }
+            @* 3 *@
+            @if (Data.DataList.Count >= 3)
+            {
+                <P_Card Data="Data.DataList[2]" IsLast=true />
+            }
+        </div>
+        <div class="dt-sc-one-half column">
+            @* 2 *@
+            @if (Data.DataList.Count >= 2)
+            {
+                <P_Card Data="Data.DataList[1]" />
+            }
+            @* 4 *@
+            @if (Data.DataList.Count == 4)
+            {
+                <P_Card Data="Data.DataList[3]" IsLast=true />
+            }
+        </div>
+        <div class="margin20"></div>
+        <div class="hr">
+            <span class="driver"></span>
         </div>
     </div>
-    <div class="dt-sc-one-half column">
-        @* 2 *@
-        <div class="menu">
-            <div class="dt-sc-one-third column first">
-                <div class="entry-thumb">
-                    <a href="index_2.html#">
-                        <span class="border rotate"> </span>
-                        <div class="border">
-                            <span class="top-right"></span>
-                            <img src="images/menu/menu-img10.jpg" alt title />
-                            <span class="code">Code:TOMFRY</span>
-                            <span class="bottom-left"></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="dt-sc-two-third column">
-                <div class="entry-detail">
-                    <h3><a href="index_2.html#">Olives with Spices</a></h3>
-                    <span class="price">$25.00</span>
-                    <p>
-                        Roin a bibendum nibh. Nunc fermentum sit amet mi nec
-                        consequat. Praesent porttitor nulla sit amet dui
-                        lobortis...
-                    </p>
-                </div>
-            </div>
-        </div>
-        @* 4 *@
-        <div class="menu last">
-            <div class="dt-sc-one-third column first">
-                <div class="entry-thumb">
-                    <a href="index_2.html#">
-                        <span class="border rotate"> </span>
-                        <div class="border">
-                            <span class="top-right"></span>
-                            <img src="images/menu/menu-img1.jpg" alt title />
-                            <span class="code">Code:TOMFRY</span>
-                            <span class="bottom-left"></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="dt-sc-two-third column">
-                <div class="entry-detail">
-                    <h3><a href="index_2.html#">Potato Croquettes</a></h3>
-                    <span class="price">$25.00</span>
-                    <p>
-                        Roin a bibendum nibh. Nunc fermentum sit amet mi nec
-                        consequat. Praesent porttitor nulla sit amet dui
-                        lobortis...
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="margin20"></div>
-    <div class="hr">
-        <span class="driver"></span>
-    </div>
-</div>
-
+}
 
 @code {
+    private BurmeseRecipeResonseModel? Data { get; set; }
+    private int RowCount;
+    private int PageNo = 1;
+    private int PageSize = 4;
+    protected override async Task OnInitializedAsync()
+    {
+        await PageChanged(1);
+    }
 
+    private int CurrentRowCount(int pageNo)
+    {
+        return Data.DataList.Skip((pageNo - 1) * PageSize).Take(PageSize).Count();
+    }
+
+    private async Task PageChanged(int pageNo)
+    {
+        Data = await Service.BurmeseRecipes(pageNo);
+        PageNo = pageNo;
+        StateHasChanged();
+    }
 }
