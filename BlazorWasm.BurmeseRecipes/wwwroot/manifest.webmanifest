@@ -1,20 +1,20 @@
 {
-  "name": "BlazorWasm.BurmeseRecipes",
-  "short_name": "BlazorWasm.BurmeseRecipes",
+  "name": "Burmese Recipes",
+  "short_name": "Burmese Recipes",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "theme_color": "#a1bd57",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "favicon.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "icon-192.png",
+      "src": "favicon.png",
       "type": "image/png",
       "sizes": "192x192"
     }
