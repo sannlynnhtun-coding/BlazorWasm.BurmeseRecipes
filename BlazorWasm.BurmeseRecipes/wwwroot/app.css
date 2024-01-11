@@ -68,3 +68,15 @@ code {
 .mud-button-filled.mud-button-filled-primary, .mud-button-filled.mud-button-filled-primary:hover, .mud-button-filled.mud-button-filled-primary:focus-visible {
     background-color: rgb(161 189 87);
 }
+
+#primary.content-full-width {
+    padding: 0px 10%;
+}
+
+.product > .dt-sc-one-half.column.first {
+    padding: 10%;
+}
+
+ol, ul {
+    padding-left: 0;
+}
