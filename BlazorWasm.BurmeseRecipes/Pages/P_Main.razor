@@ -1,10 +1,12 @@
 ﻿@page "/"
 @using BlazorWasm.BurmeseRecipes.Models
+@implements IDisposable
+@inject BurmeseRecipeStateContainer StateContainer
 
-@if (Data is not null)
-{
-    <div class="container">
-        <h2 class="block-title">Burmese Recipes</h2>
+<div class="container">
+    <h2 class="block-title">Burmese Recipes</h2>
+    @if (Data is not null)
+    {
         <div style="display:flex;justify-content:center;">
             <MudPagination SelectedChanged="PageChanged" Count="@(Data.PageCount)" Class="pa-4" />
         </div>
@@ -36,20 +38,60 @@
             }
         </div>
         <div class="margin20"></div>
-        <div class="hr">
-            <span class="driver"></span>
-        </div>
-    </div>
-}
 
+    }
+    else if (Detail is not null)
+    {
+        <section id="primary" class="content-full-width">
+            <input type="button" value="Back" @onclick="Back"
+                   class="small theme-btn dt-sc-button">
+            <div class="product">
+                <div class="dt-sc-one-half column first">
+                    <div class="border">
+                        <div class="images product-thumb">
+                            <img src="img/@(Detail.Data.Name).jpg" alt title onerror="this.src='img/default.png'" />
+                        </div>
+                    </div>
+                </div>
+                <div class="dt-sc-one-half column">
+                    <div class="summary entry-summary">
+                        <h1>For</h1>
+                        <h2>@(Detail.UserType.UserMMType)Or@(Detail.UserType.UserEngType)</h2>
+                        <br/>
+                        <h2>Menu Name</h2>
+                        <h2 class="product_title entry-title">@(Detail.Data.Name)</h2>
+                        <br />
+                        <h2>Ingredients</h2>
+                        <ul class="dt-sc-fancy-list beer">
+                            <li>@((MarkupString)Detail.Data.Ingredients))</li>
+                        </ul>
+
+                        <h2>How to cook?</h2>
+                        <p>
+                            @((MarkupString)Detail.Data.CookingInstructions)
+                        </p>
+                    </div>
+                </div>
+                <div class="margin50"></div>
+            </div>
+            <div class="margin50"></div>
+        </section>
+    }
+    <div class="hr">
+        <span class="driver"></span>
+    </div>
+</div>
 @code {
     private BurmeseRecipeResonseModel? Data { get; set; }
+    private BurmeseRecipeDetailModel? Detail { get; set; }
+    private UserTypeModel? UserType;
     private int RowCount;
     private int PageNo = 1;
     private int PageSize = 4;
     protected override async Task OnInitializedAsync()
     {
         await PageChanged(1);
+        StateContainer.OnChange += CardDetail;
     }
 
     private int CurrentRowCount(int pageNo)
@@ -62,5 +104,23 @@
         Data = await Service.BurmeseRecipes(pageNo);
         PageNo = pageNo;
         StateHasChanged();
+    }
+
+    public void CardDetail()
+    {
+        Detail = StateContainer.Data;
+        Data = null;
+        StateHasChanged();
+    }
+
+    private async Task Back()
+    {
+        Detail = null;
+        await PageChanged(1);
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnChange -= StateHasChanged;
     }
 }

@@ -11,4 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddMudServices();
 builder.Services.AddScoped<BurmeseRecipeService>();
+builder.Services.AddSingleton<BurmeseRecipeStateContainer>();
+
 await builder.Build().RunAsync();

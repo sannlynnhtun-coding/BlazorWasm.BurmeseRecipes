@@ -7,6 +7,7 @@ namespace BlazorWasm.BurmeseRecipes.Services
     {
         private readonly HttpClient _httpClient;
         private static List<BurmeseRecipeModel>? BurmeseRecipesLst = null;
+        private static List<UserTypeModel>? UserTypeLst = null;
         public BurmeseRecipeService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -25,7 +26,7 @@ namespace BlazorWasm.BurmeseRecipes.Services
             }
             var count = lst.Count();
             var totalPage = count / pageSize;
-            if (totalPage % pageSize > 0)
+            if (count % pageSize > 0)
                 totalPage++;
             var model = new BurmeseRecipeResonseModel
             {
@@ -36,6 +37,27 @@ namespace BlazorWasm.BurmeseRecipes.Services
             };
             return model;
         }
+
+        public async Task<List<UserTypeModel>?> UserTypes()
+        {
+            var lst = new List<UserTypeModel>();
+            if(UserTypeLst is null)
+            {
+                lst = await GetData<UserTypeModel>("data/UserTypes.json");
+                UserTypeLst = lst;
+            }
+            else
+            {
+                lst = UserTypeLst;
+            }
+            return lst;
+        }
+
+        public async Task<UserTypeModel?> UserTypeData(string userCode)
+        {
+            var lst = await UserTypes();
+            return lst.FirstOrDefault(x=> x.UserCode == userCode);
+        } 
         private async Task<List<T>?> GetData<T>(string filePath)
         {
             return await _httpClient.GetFromJsonAsync<List<T>>(filePath);

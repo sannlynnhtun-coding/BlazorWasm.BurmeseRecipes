@@ -1,6 +1,7 @@
-﻿@if (Data is not null)
+﻿@inject BurmeseRecipeStateContainer StateContainer
+@if (Data is not null)
 {
-    <div class="menu @(IsLast ? "last" :"")">
+    <div class="menu @(IsLast ? "last" :"")" @onclick="()=>CardDetail(Data)">
         <div class="dt-sc-one-third column first">
             <div class="entry-thumb">
                 <a href="javascript:void(0);">
@@ -29,4 +30,15 @@
 
     [Parameter]
     public bool IsLast { get; set; }
+    private BurmeseRecipeDetailModel? Detail { get; set; }
+    private async Task CardDetail(BurmeseRecipeModel data)
+    {
+        var userType = await Service.UserTypeData(data.UserType);
+        Detail = new BurmeseRecipeDetailModel
+        {
+                Data = data,
+                UserType = userType!
+        };
+        StateContainer.Data = Detail;
+    }
 }

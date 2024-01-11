@@ -3,12 +3,12 @@
     "UserId": 1,
     "UserCode": "001",
     "UserMMType": "အသားစား",
-    "UseEngType": "MeatEater"
+    "UserEngType": "MeatEater"
   },
   {
     "UserId": 2,
     "UserCode": "002",
     "UserMMType": "သက်သက်လွတ်",
-    "UseEngType": "Vegan"
+    "UserEngType": "Vegan"
   }
 ]
